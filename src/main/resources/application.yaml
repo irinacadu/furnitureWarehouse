@@ -1,0 +1,19 @@
+spring:
+  datasource:
+      url: jdbc:postgresql://localhost:5432/p_poc
+      driver-class-name: org.postgresql.Driver
+      username: postgres
+      password: postgres
+  batch:
+       jdbc:
+         initialize-schema: always
+       job:
+          enabled: true
+          name: furniture-job
+  flyway:
+       enabled: true
+       baseline-on-migrate: true
+
+
+
+
