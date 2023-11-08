@@ -1,26 +1,18 @@
 package com.furnitureWarehouse;
 
-import com.furnitureWarehouse.config.FurnitureConfig;
 import com.furnitureWarehouse.entities.Furniture;
 import com.furnitureWarehouse.repositories.FurnitureRepo;
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.csv.CsvParser;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.test.JobLauncherTestUtils;
@@ -30,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
@@ -38,8 +29,6 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import java.io.*;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 @SpringBootTest
 @SpringBatchTest
@@ -75,7 +64,7 @@ class FurnitureWarehouseApplicationTests {
 		JobExecution jobExecution = jobLauncher.run(furnitureJob, jobLauncherTestUtils.getUniqueJobParameters());
 
 		// Verifica que el trabajo haya terminado con éxito
-		assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
+		Assertions.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
 
 		// Obtiene los datos escritos por el escritor
 		List<Furniture> writtenFurniture = furnitureRepo.findAll(Sort.by(Sort.Order.asc("id")));
@@ -86,19 +75,19 @@ class FurnitureWarehouseApplicationTests {
 		List<Furniture> expectedFurniture = getExpectedFurniture();
 		System.out.println("Cadena actual: " + writtenFurniture.get(0).getId());
 		System.out.println("Cadena esperada: " + expectedFurniture.get(0).getId());
-		assertEquals(expectedFurniture.size(), writtenFurniture.size());
+		Assertions.assertEquals(expectedFurniture.size(), writtenFurniture.size());
 
 		for (int i = 0; i < expectedFurniture.size(); i++) {
 			Furniture expected = expectedFurniture.get(i);
 			Furniture actual = writtenFurniture.get(i);
 
 			// Comparar los datos esperados con los datos escritos
-			assertEquals(expected.getId(), actual.getId());
-			assertEquals(expected.getOwner().trim(), actual.getOwner().trim());
-			assertEquals(expected.getType().trim(), actual.getType().trim());
-			assertEquals(expected.getMaterial().trim(), actual.getMaterial().trim());
-			assertEquals(expected.getYearsInStorage(), actual.getYearsInStorage());
-			assertEquals(expected.isWarehouseOutput(), actual.isWarehouseOutput());
+			Assertions.assertEquals(expected.getId(), actual.getId());
+			Assertions.assertEquals(expected.getOwner().trim(), actual.getOwner().trim());
+			Assertions.assertEquals(expected.getType().trim(), actual.getType().trim());
+			Assertions.assertEquals(expected.getMaterial().trim(), actual.getMaterial().trim());
+			Assertions.assertEquals(expected.getYearsInStorage(), actual.getYearsInStorage());
+			Assertions.assertEquals(expected.isWarehouseOutput(), actual.isWarehouseOutput());
 		}
 
 	}
@@ -121,7 +110,7 @@ class FurnitureWarehouseApplicationTests {
 
 
 		// Verifica que el trabajo haya terminado con éxito
-	assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
+	     Assertions.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
 
 
 		// Leer los datos del CSV
@@ -143,8 +132,7 @@ class FurnitureWarehouseApplicationTests {
 					Class<?> csvType = csvValue.getClass();
 					Class<?> dbType = dbValue.getClass();
 
-					assertEquals("Tipo de datos en CSV y base de datos no coincide en la columna " + columnName,
-							csvType, dbType);
+					Assertions.assertEquals(csvType, dbType, "Tipo de datos en CSV y base de datos no coincide en la columna " + columnName);
 				}
 			}
 		}
