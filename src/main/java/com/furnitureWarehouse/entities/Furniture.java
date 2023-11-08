@@ -17,7 +17,7 @@ import lombok.Setter;
 public class Furniture {
 
     @Id
-    private String id;
+    private Integer id;
     private String owner;
     private String type;
     private String material;

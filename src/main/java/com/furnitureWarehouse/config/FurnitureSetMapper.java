@@ -18,7 +18,7 @@ public class FurnitureSetMapper implements FieldSetMapper<Furniture> {
 
         return new Furniture(
 
-                fieldSet.readString(ID.getIndex()),
+                fieldSet.readInt(ID.getIndex()),
                 fieldSet.readString(OWNER.getIndex()),
                 fieldSet.readString(TYPE_FURNITURE.getIndex()),
                 fieldSet.readString(MATERIAL.getIndex()),

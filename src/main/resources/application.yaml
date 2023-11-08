@@ -1,6 +1,6 @@
 spring:
   datasource:
-      url: jdbc:postgresql://localhost:5432/p_poc
+      url: jdbc:postgresql://localhost:5432/poc
       driver-class-name: org.postgresql.Driver
       username: postgres
       password: postgres
@@ -13,6 +13,7 @@ spring:
   flyway:
        enabled: true
        baseline-on-migrate: true
+
 
 
 

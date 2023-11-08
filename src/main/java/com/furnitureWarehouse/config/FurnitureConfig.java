@@ -36,6 +36,7 @@ public class FurnitureConfig {
     @Bean
     public Job furnitureJob(JobRepository jobRepository,
                             Step furnitureStep){
+        log.info("entra job");
         return new JobBuilder("furniture-job", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .flow(furnitureStep)
@@ -47,8 +48,9 @@ public class FurnitureConfig {
     public Step furnitureStep(JobRepository jobRepository,
                               PlatformTransactionManager transactionManager, FlatFileItemReader<Furniture>furnitureFlatFileItemReader,
                               FurnitureProcessor furnitureProcessor, RepositoryItemWriter<Furniture>furnitureRepositoryItemWriter){
+        log.info("entra step");
         return new StepBuilder("furniture-step", jobRepository)
-                .<Furniture, Furniture>chunk(2, transactionManager)
+                .<Furniture, Furniture>chunk(1, transactionManager)
                 .reader(furnitureFlatFileItemReader)
                 .processor(furnitureProcessor)
                 .writer(furnitureRepositoryItemWriter)
@@ -60,7 +62,7 @@ public class FurnitureConfig {
     public FlatFileItemReader<Furniture> furnitureFlatFileItemReader(FieldSetMapper<Furniture>furnitureSetMapper) {
         log.info("entra reader");
         DelimitedLineTokenizer furnitureLineTokenizer = new DelimitedLineTokenizer();
-        furnitureLineTokenizer.setDelimiter(",");
+        furnitureLineTokenizer.setDelimiter(";");
         furnitureLineTokenizer.setStrict(false);
         furnitureLineTokenizer.setNames("id","owner","type","material","yearsInStorage","warehouseOutput");
         furnitureLineTokenizer.setIncludedFields(0,1,2,3,4,5); //esto me faltaba
@@ -70,7 +72,7 @@ public class FurnitureConfig {
         furnitureDefaultLineMapper.setFieldSetMapper(furnitureSetMapper); //esto me faltaba
 
         FlatFileItemReader <Furniture> furnitureFlatFileItemReader = new FlatFileItemReader<>();
-        furnitureFlatFileItemReader.setResource(new ClassPathResource("csv/almacen.csv"));//esto lo tenía en otro sitio;
+        furnitureFlatFileItemReader.setResource(new ClassPathResource("csv/poc.csv"));//esto lo tenía en otro sitio;
         furnitureFlatFileItemReader.setLineMapper(furnitureDefaultLineMapper);
 
         return furnitureFlatFileItemReader;
