@@ -119,8 +119,9 @@ class FurnitureWarehouseApplicationTests {
 	public void testTypeOfDataReadAndWritten() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException, IOException, CsvValidationException {
 		JobExecution jobExecution = jobLauncher.run(furnitureJob, jobLauncherTestUtils.getUniqueJobParameters());
 
+
 		// Verifica que el trabajo haya terminado con éxito
-		assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
+	assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
 
 
 		// Leer los datos del CSV
@@ -153,7 +154,7 @@ class FurnitureWarehouseApplicationTests {
 	}
 
 	private List<Map<String,String>> readCsvData() throws IOException, CsvValidationException {
-		furnitureItemReader.setResource(new ClassPathResource("csv/poc.csv"));
+
 		List<Map<String, String>> csvData = new ArrayList<>();
 
 		try (Reader reader = new InputStreamReader(new ClassPathResource("csv/poc.csv").getInputStream());
